@@ -50,6 +50,6 @@ block main
         input(name="status", class="form-check-input", id="status", type="radio", value='active', checked=(product.status=="active" ? true: false))  
     div(class='form-group form-check form-check-inline')
         label(for='status', class="form-check-label") Inactive
-        input(name="status", class="form-check-input", id="status", type="radio", value='inactive', checked=(product.status=="active" ? true: false))  
+        input(name="status", class="form-check-input", id="status", type="radio", value='inactive', checked=(product.status=="inactive" ? true: false))  
     button(type="submit", class="btn btn-primary") Update
  script(src="/admin/js/createProduct.js")

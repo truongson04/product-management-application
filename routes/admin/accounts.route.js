@@ -7,5 +7,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 router.get("/", controller.index);
 router.get("/create", controller.getCreate);
-router.post("/create", upload.single("thumbnail") , uploadCloud.upload,controller.addNewAccount);
+router.post("/create", upload.single("avatar") , uploadCloud.uploadAvatar,controller.addNewAccount);
+router.get("/edit/:id", controller.getEdit)
+router.patch("/edit/:id",upload.single("avatar") , uploadCloud.uploadAvatar,controller.editAccount)
 module.exports=router;

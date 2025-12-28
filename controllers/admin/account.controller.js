@@ -33,7 +33,6 @@ module.exports.addNewAccount= async (req, res)=>{
         email:req.body.email, 
         deleted:false
     });
-    console.log(emailCheck)
     if(emailCheck){
         req.flash("error", "Email has been used !");
         res.redirect("/admin/accounts");
@@ -44,4 +43,39 @@ module.exports.addNewAccount= async (req, res)=>{
     await account.save();
     req.flash("success","Created successfully");
     res.redirect("/admin/accounts");
+}
+module.exports.getEdit= async(req, res)=>{
+      let find ={
+        _id:req.params.id,
+        deleted:false
+    }
+    const account = await Account.findOne(find);
+   const roles = await Role.find({deleted:false});
+    res.render("admin/pages/accounts/edit", {
+        pageTitle:"Edit accounts",
+        account:account,
+        roles:roles
+    })
+}
+module.exports.editAccount= async(req, res)=>{
+      const emailCheck = await Account.findOne({
+        _id:{$ne:req.params.id},
+        email:req.body.email, 
+        deleted:false
+    });
+    if(emailCheck){
+        req.flash("error", "Email has been used !");
+        res.redirect(`/admin/accounts/edit/${req.params.id}`);
+        return;
+    }
+    if(req.body.password){
+        req.body.password= md5(req.body.password);
+
+    }
+    else{
+        delete req.body.password
+    }
+    await Account.updateOne({_id:req.params.id}, req.body)
+    req.flash("success", "Updated successfully!")
+    res.redirect(`/admin/accounts/edit/${req.params.id}`)
 }
