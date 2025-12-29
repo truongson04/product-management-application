@@ -45,12 +45,14 @@ mixin table-tree(list, level=1)
                         a.btn.btn-secondary.btn-sm(
                             href=`/admin/product-category/details/${items.id}`
                         ) Details
-                        a.btn.btn-warning.btn-sm(
-                            href=`/admin/product-category/edit/${items.id}`
-                        ) Edit
-                        button.btn.btn-danger.btn-sm.ml-1(
-                            button-delete,
-                            data-id=items.id
-                        ) Delete
+                        if(role.permissions.includes("product-category_edit"))
+                            a.btn.btn-warning.btn-sm(
+                                href=`/admin/product-category/edit/${items.id}`
+                            ) Edit
+                        if(role.permissions.includes("product-category_delete"))
+                            button.btn.btn-danger.btn-sm.ml-1(
+                                button-delete,
+                                data-id=items.id
+                            ) Delete
         if(items.children && items.children.length>0)
             +table-tree(items.children, level + 1)

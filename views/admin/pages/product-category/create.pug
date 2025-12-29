@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/successAlert.pug 
 include ../../mixins/select-tree.pug
 block main 
+   if(role.permissions.includes("products-category_create"))
     h1 Add new product's category 
     +errorAlert()
     form(action="/admin/product-category/create", method="POST", enctype="multipart/form-data")

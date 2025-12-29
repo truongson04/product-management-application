@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug 
 include ../../mixins/successAlert.pug 
 block main 
+  if(role.permissions.includes("roles_permission"))
     h1 Permission Assignment 
     div(class="text-right")
         button(type="submit", class="btn btn-primary mb-3", button-submit) Update 
@@ -86,6 +87,35 @@ block main
                 each items in records 
                     td(class="text-center")
                         input(type="checkbox")
+            tr(data-name="roles_permission")
+                td Assign roles 
+                each items in records 
+                    td(class="text-center")
+                        input(type="checkbox")
+            tr 
+                td(colspan="4")
+                    b Accounts
+            tr(data-name="accounts_view") 
+                td View 
+                each items in records 
+                    td(class="text-center")
+                        input(type="checkbox")
+            tr(data-name="accounts_create") 
+                td Add new 
+                each items in records 
+                    td(class="text-center")
+                        input(type="checkbox")
+            tr(data-name="accounts_edit")
+                td Edit 
+                each items in records 
+                    td(class="text-center")
+                        input(type="checkbox")
+            tr(data-name="accounts_delete")
+                td Delete 
+                each items in records 
+                    td(class="text-center")
+                        input(type="checkbox")
+            
     +successAlert()
     +errorAlert()
     form(id="form-change-permission", method="POST", action="/admin/roles/permissions?_method=PATCH", class="d-none")

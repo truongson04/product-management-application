@@ -1,102 +1,119 @@
-extends ../../layouts/default.pug 
+extends ../../layouts/default.pug
 include ../../mixins/successAlert.pug
 include ../../mixins/sort.pug
-block main 
 
- h1 Products List
-  +successAlert()
-  +errorAlert()
-  
- div(class="card mb-3")
-  div(class="card-header") Filter and search 
-  div(class="card-body")
-   div(class="row")
-      div(class="col-6")
-        each items in filterStatus
-         button(class=`btn btn-sm ml-1 btn-outline-success ${items.class}`, button-status=items.status) #{items.name} 
-      div(class="col-6")
-        form(id="form-search")
-         div(class="input-group")
-          input(type="text", placeholder="Type something...", name="keyword", class="form-control", value=inputValue)
-          div(class="input-group-append")
-           button(class="btn btn-success search-btn") Search
-  div(class="card-body")
-    form(action=`/admin/products/change-multi?_method=PATCH`, method="POST", form-change-multi) 
-    div(class="d-flex align-items-start")
-      div(class="form-group")
-      select(name="type", class="form-control")
-        option(value="active") Active
-        option(value="inactive") Inactive
-        option(value="delete-all") Delete All 
-        option(value="change-position") Change Position
-      div(class="form-group")
-      input(type="text", name="ids", value="", class="form-control d-none")
-      input(type="text", name="page", value=pagination.currentPage class="form-control d-none")
-      button(type="submit", class="btn btn-primary") Apply
-      a(class="btn btn-outline-success", href="/admin/products/create") +Add new products
+block main
+ if(role.permissions.includes("products_view"))
+  h1 Products List
+    +successAlert()
+    +errorAlert()
+ 
+  div(class="card mb-3")
+    div(class="card-header") Filter and search
+    div(class="card-body")
+      div(class="row")
+        div(class="col-6")
+          each items in filterStatus
+            button(class=`btn btn-sm ml-1 btn-outline-success ${items.class}`, button-status=items.status) #{items.name}
+        div(class="col-6")
+          form(id="form-search")
+            div(class="input-group")
+              input(type="text", placeholder="Type something...", name="keyword", class="form-control", value=inputValue)
+              div(class="input-group-append")
+                button(class="btn btn-success search-btn") Search
+
+    div(class="card-body")
+      form(action=`/admin/products/change-multi?_method=PATCH`, method="POST", form-change-multi)
+        div(class="d-flex align-items-start")
+          div(class="form-group")
+            select(name="type", class="form-control")
+              option(value="active") Active
+              option(value="inactive") Inactive
+              option(value="delete-all") Delete All
+              option(value="change-position") Change Position
+          div(class="form-group")
+            input(type="text", name="ids", value="", class="form-control d-none")
+            input(type="text", name="page", value=pagination.currentPage, class="form-control d-none")
+          button(type="submit", class="btn btn-primary") Apply
+          if(role.permissions.includes("products_create"))
+            a(class="btn btn-outline-success", href="/admin/products/create") +Add new products
+
   div(class="card mb-3")
     div(class="card-header") Order
     div(class="card-body")
       div(class="row")
         div(class="row-4")
-         +sort()
- table(class="table table-hover table-sm", check-box-multi)
-  thead 
-   tr  
-    th 
-     input(type="checkbox", name="checkall")
-    th Order 
-    th Thumbnail 
-    th Title 
-    th Price 
-    th Position
-    th Status 
-    th Action 
-  tbody 
-  each items, index in products 
-   tr 
-   td
-    input(type="checkbox",name="id", value=items.id)
-   td #{(pagination.currentPage*(pagination.limit-1))+(index+1)}
-   td 
-    img(src= items.thumbnail, width="100px", height="auto")
-   td #{items.title}
-   td #{items.price}$
-   td 
-    input(type="number", 
-      value = items.position||1,
-       style = "width : 60px",
-        min=1,
-        name = "position")
-   td 
-    if(items.status=="active")
-     a(href="javascript:;", class="badge badge-success"
-      button-change-status,
-       data-id = items.id,
-        data-status ="active" ) Active 
-    else 
-     a(href="javascript:;", class="badge badge-danger",
-      button-change-status, 
-       data-id=items.id,
-        data-status="inactive") Inactive 
-   td 
-    a(class="btn btn-secondary btn-sm", href=`/admin/products/details/${items.id}`) Details
-    a(class="btn btn-warning btn-sm", href=`/admin/products/edit/${items.id}`) Edit
-    button(class="btn btn-danger btn-sm ml-1",
-    button-delete,
-    data-id=items.id
-    ) Delete
- 
- nav 
-   ul(class="pagination")
-    li(class=`page-item ${pagination.currentPage==1 ? "disabled" :""}`)
-      button(class="page-link", button-paginaion=pagination.currentPage-1) Prev
-    - for(let i=pagination.currentPage; i<pagination.currentPage+3; i++)
-    
-        li(class=`page-item ${pagination.currentPage == i ? "active" :""}`)
-         button(class="page-link", button-paginaion=i) #{i}
-    li(class=`page-item ${pagination.currentPage>=pagination.total  ? "disabled" :""}`)
-      button(class="page-link", button-paginaion=pagination.currentPage+1) Next  
- form(action="", method="POST", id ="form-change-status", data-path=`/admin/products/change-status/${pagination.currentPage}`) 
- form(action="", method="POST", id ="form-delete", data-path=`/admin/products/delete/${pagination.currentPage}`)
- script(src="/admin/js/products.js") 
+          +sort()
+
+  table(class="table table-hover table-sm", check-box-multi)
+    thead
+      tr
+        th
+          input(type="checkbox", name="checkall")
+        th Order
+        th Thumbnail
+        th Title
+        th Price
+        th Position
+        th Status
+        th Action
+    tbody
+      each items, index in products
+        tr
+          td
+            input(type="checkbox", name="id", value=items.id)
+          td #{(pagination.currentPage * (pagination.limit - 1)) + (index + 1)}
+          td
+            img(src=items.thumbnail, width="100px", height="auto")
+          td #{items.title}
+          td #{items.price}$
+          td
+            input(type="number",
+              value=items.position || 1,
+              style="width : 60px",
+              min=1,
+              name="position")
+          td
+            if items.status == "active"
+              a(
+                href="javascript:;",
+                class="badge badge-success",
+                button-change-status,
+                data-id=items.id,
+                data-status="active"
+              ) Active
+            else
+              a(
+                href="javascript:;",
+                class="badge badge-danger",
+                button-change-status,
+                data-id=items.id,
+                data-status="inactive"
+              ) Inactive
+          td
+            a(class="btn btn-secondary btn-sm", href=`/admin/products/details/${items.id}`) Details
+            if(role.permissions.includes("product_edit"))
+              a(class="btn btn-warning btn-sm", href=`/admin/products/edit/${items.id}`) Edit
+            if(role.permissions.includes("product_delete"))
+              button(
+                class="btn btn-danger btn-sm ml-1",
+                button-delete,
+                data-id=items.id
+              ) Delete
+
+  nav
+    ul(class="pagination")
+      li(class=`page-item ${pagination.currentPage == 1 ? "disabled" : ""}`)
+        button(class="page-link", button-paginaion=pagination.currentPage-1) Prev
+
+      - for (let i = pagination.currentPage; i < pagination.currentPage + 3; i++)
+        li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+          button(class="page-link", button-paginaion=i) #{i}
+
+      li(class=`page-item ${pagination.currentPage >= pagination.total ? "disabled" : ""}`)
+        button(class="page-link", button-paginaion=pagination.currentPage+1) Next
+
+  form(action="", method="POST", id="form-change-status", data-path=`/admin/products/change-status/${pagination.currentPage}`)
+  form(action="", method="POST", id="form-delete", data-path=`/admin/products/delete/${pagination.currentPage}`)
+
+  script(src="/admin/js/products.js")

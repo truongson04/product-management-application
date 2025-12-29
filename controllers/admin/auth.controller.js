@@ -4,7 +4,7 @@ const md5 = require("md5");
 module.exports.getLogin =(req, res)=>{
     if(req.cookies.token){
         res.redirect("/admin/dashboard");
-        return
+        return;
     }
    res.render("admin/pages/auth/login.pug", {
     pageTitle:"Login"

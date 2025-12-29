@@ -1,17 +1,22 @@
 html 
  div(class="sider") 
   div(class="inner-menu")
-   ul 
-    li
-     a(href="/admin/dashboard") Overview 
-    li 
-     a(href="/admin/product-category") Categories
-    li 
-     a(href="/admin/products") Products
-    li 
-     a(href="/admin/roles") Permission and roles
-    li 
-     a(href="/admin/roles/permission") Assign permission
-    li 
-     a(href="/admin/accounts") Accounts management
-     
+    ul
+        li
+            a(href="/admin/dashboard") Overview 
+        if(role.permissions.includes("products-category_view"))
+            li 
+                a(href="/admin/product-category") Categories
+        if(role.permissions.includes("products_view"))
+            li 
+                a(href="/admin/products") Products
+        if(role.permissions.includes("roles_view"))
+            li 
+                a(href="/admin/roles") Permission and roles
+        if(role.permissions.includes("roles_permission"))
+            li 
+                a(href="/admin/roles/permission") Assign permission
+        if(role.permissions.includes("accounts_view"))
+            li 
+                a(href="/admin/accounts") Accounts management
+        

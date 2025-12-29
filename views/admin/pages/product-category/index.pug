@@ -5,6 +5,7 @@ include ../../mixins/sort.pug
 include ../../mixins/table-tree.pug
 
 block main
+  if(role.permissions.includes("products-category_create"))
     h1 Product Categories
     +errorAlert()
     +successAlert()
@@ -16,6 +17,7 @@ block main
             .row
                 .col-8
                 .col-4.text-right
+                   if(role.permissions.includes("products-category_create"))
                     a.btn.btn-outline-success(href="/admin/product-category/create")
                         | Add new
 
@@ -33,4 +35,6 @@ block main
 
         tbody
            +table-tree(list)
+  else 
+    h1 You are not allowed
     script(src="/admin/js/products.js")
