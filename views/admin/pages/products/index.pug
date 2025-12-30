@@ -56,6 +56,7 @@ block main
         th Position
         th Status
         th Creator
+        th Last editor
         th Action
     tbody
       each items, index in products
@@ -93,6 +94,10 @@ block main
           td 
             p #{items.creator}
             p #{moment(items.createdBy.createdAt).format("DD/MM/YYYY HH:mm:ss")} 
+          td 
+            p #{items.edited}
+            if items.updatedBy && items.updatedBy.length > 0
+              p  #{ moment(items.updatedBy[items.updatedBy.length-1].updatedAt).format("DD/MM/YYYY HH:mm:ss")}
           td
             a(class="btn btn-secondary btn-sm", href=`/admin/products/details/${items.id}`) Details
             if(role.permissions.includes("product_edit"))

@@ -67,11 +67,22 @@ module.exports.index = async (req, res) => {
     const index = fillterStatus.findIndex((items) => items.status == "");
     fillterStatus[index].class = "active";
   }
+  // lấy ra người tạo 
  for(const product of productList){
   const user = await Account.findOne({_id: product.createdBy.account_id});
   if(user){
     product.creator = user.fullName;
   }
+  const updated = product.updatedBy[product.updatedBy.length-1];
+
+  if(updated){
+    const userUpdated = await Account.findOne({_id: updated.account_id});
+  if(userUpdated){
+    product.edited = userUpdated.fullName;
+    
+  }
+  }
+  
  }
   res.render("admin/pages/products/index.pug", {
     pageTitle: "Product Management",
@@ -209,9 +220,13 @@ req.body.number = parseFloat(req.body.number);
 if(req.file){
 req.body.thumbnail= `/uploads/${req.file.filename}`;
 }
-
+ const updated = 
+  {
+    account_id: res.locals.user._id,
+    updatedAt : new Date()
+  }
 try{
-await Product.updateOne({_id:req.params.id}, req.body)
+await Product.updateOne({_id:req.params.id}, {...req.body, $push:{updatedBy:updated}}) // thêm lịch sử edit 
 req.flash("success", "Updated successfully")
 }
 catch(err){
