@@ -1,6 +1,7 @@
 const Product = require("../../models/product.models");
 const helper = require("../../helper/createTree");
 const productCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
 //Display the list
 module.exports.index = async (req, res) => {
   let find = {
@@ -66,7 +67,12 @@ module.exports.index = async (req, res) => {
     const index = fillterStatus.findIndex((items) => items.status == "");
     fillterStatus[index].class = "active";
   }
-
+ for(const product of productList){
+  const user = await Account.findOne({_id: product.createdBy.account_id});
+  if(user){
+    product.creator = user.fullName;
+  }
+ }
   res.render("admin/pages/products/index.pug", {
     pageTitle: "Product Management",
     products: productList,
@@ -122,7 +128,10 @@ module.exports.deleteItem = async (req, res) => {
   const page = req.params.page;
   await Product.updateOne(
     { _id: id },
-    { deleted: true, deletedAt: new Date() }
+    { deleted: true, deletedBy:{
+        account_id: res.locals.user._id,
+       deletedAt: new Date(),
+       }}
   );
   req.flash("success", "Deleted Successfully")
   res.redirect(`/admin/products?page=${page}`);
@@ -153,16 +162,14 @@ if(!req.body.position){
 req.body.price = parseFloat(req.body.price);
 req.body.discount = parseFloat(req.body.discount);
 req.body.number = parseFloat(req.body.number);
-
+req.body.createdBy= {
+  account_id:res.locals.user._id
+}
 
 const newProduct = new Product(req.body);
 await newProduct.save();
 res.redirect("/admin/products")
 
-
-
-console.log(req.body);
-res.send('ok');
 }
 // go to the edit the product page
 module.exports.editItem= async (req, res )=>{

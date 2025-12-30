@@ -7,6 +7,7 @@ const session = require("express-session")
 const bodyParser = require('body-parser')
 const app = express();
 app.use(methodOverride('_method'))
+const moment = require("moment");
 require("dotenv").config();
 const port = process.env.PORT; 
 const route = require("./routes/client/index.route")
@@ -21,6 +22,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, 'public')));
+//format time 
+app.locals.moment= moment;
 //Tinymce 
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 route(app);
