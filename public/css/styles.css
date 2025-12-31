@@ -1,19 +1,114 @@
-.header .inner-logo img{
-max-height: 50px; 
-max-width: 100px; 
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
-.header .inner-menu ul{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap:wrap; 
+
+.header {
+  width: 100%;
+  background-color: #ffffff;
+  /* Đổ bóng nhẹ tạo độ nổi */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1000; /* Đảm bảo menu luôn nằm trên các thành phần khác */
 }
-.header .inner-menu ul li{
-    margin-left: 20px;
+
+.inner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px; /* Chiều cao cố định cho header */
 }
+
+/* Logo */
+.inner-logo img {
+  height: 40px; /* Dùng height để giữ tỉ lệ ảnh tốt hơn */
+  width: auto;
+  display: block;
+}
+
+/* --- Main Menu --- */
+.inner-menu > ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 30px;
+}
+
+.inner-menu > ul > li {
+  position: relative; /* Quan trọng để định vị menu con */
+}
+
+/* Style cho link cấp 1 */
+.inner-menu > ul > li > a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 25px 0; /* Tăng diện tích hover */
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.inner-menu > ul > li > a:hover {
+  color: #007bff;
+}
+
+.submenu {
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  background-color: #fff;
+  width: 220px; /* Chiều rộng cố định cho menu con */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.submenu li {
+  position: relative;
+}
+
+.submenu a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.submenu a:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.inner-menu li:hover > .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.inner-menu > ul > li > .submenu {
+  top: 100%;
+  left: 0;
+  border-top: 2px solid #007bff; 
+}
+
+/* Định vị menu Cấp 3 trở đi (Xổ sang ngang bên phải) */
+.submenu .submenu {
+  top: 0;
+  right: 100%; /* Đẩy sang bên phải */
+  margin-top: -5px; /* Chỉnh lại chút cho thẳng hàng */
+}
+
 .footer{
     background-color: black;
     color: white;
@@ -331,4 +426,54 @@ color: green;
 .btn-add-cart:hover {
   transform: translateY(-2px); /* Hiệu ứng nhấc nút lên khi hover */
   box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3) !important;
+}
+/* phần menu */
+
+.inner-menu li {
+  position: relative;
+}
+.sub-menu {
+  position: absolute;
+  background-color: rgb(241, 220, 220);
+  min-width: 180px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: none; /* Ẩn đi */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+li:hover > .sub-menu {
+  display: block;
+}
+
+.inner-menu > ul > li > .sub-menu {
+  top: 100%;
+  left: 0;
+}
+
+
+.sub-menu .sub-menu {
+  top: 0;
+  right: 100%;
+  background-color: cyan 
+  
+}
+
+
+.sub-menu li {
+  border-bottom: 1px solid rgb(220, 217, 217);
+}
+
+.sub-menu a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  white-space: nowrap; 
+}
+
+.sub-menu a:hover {
+  background-color: rgba(255,255,255, 0.5);
 }

@@ -1,14 +1,19 @@
-header(class="header")
- div(class="container")
-  div(class="row align-items-center")
-   div(class="col-3")
-    div(class="inner-logo")
-     a(href="/")
-      img(src="/images/pic.png")
-   div(class="col-9")
-    div(class="inner-menu")
-     ul 
-      li 
-       a(href="/") Home Page 
-      li 
-       a(href="/products") Products
+include ../mixins/sub-menu.pug
+
+header.header
+  .container
+    .inner-wrap
+      .inner-logo
+        a(href="/")
+          img(src="/images/pic.png" alt="Logo")
+   
+      .inner-menu
+        ul
+          li
+            a(href="/") Home Page
+          li.has-submenu
+            a(href="/products") Products
+            if(categories)
+               +sub-menu(categories, "/products")
+               
+        
