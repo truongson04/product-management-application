@@ -8,7 +8,8 @@ inputImage.addEventListener("change", (e)=>{
  const file = e.target.files[0];
 if(file){
     preview.src= URL.createObjectURL(file);
-    preview.style.height= "200px";
+    preview.style.height= "200px"
+     preview.style.width="200px";
 
 }
 

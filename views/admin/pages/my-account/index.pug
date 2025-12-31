@@ -1,0 +1,21 @@
+extends ../../layouts/default.pug 
+block main 
+    h1(class="mb-4") Personal information 
+    if(user.avatar)
+        img(src=user.avatar, width="150px" class="mb-3")
+    if(user.fullName)
+        p FullName : 
+            b #{user.fullName}
+    if(user.email)
+        p Email: 
+            b #{user.email}
+    if(user.phone)
+        p Phone: 
+            b #{user.phone} 
+    p 
+        span Status:<b> #{user.status=="active "?  "Active":"Inactive" } </b>
+    if(role.title)
+        p Role 
+            b #{role.title} 
+    a(href="/admin/my-account/edit", class="btn btn-primary") Edit    
+        
