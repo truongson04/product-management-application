@@ -102,7 +102,7 @@
   border-top: 2px solid #007bff; 
 }
 
-/* Định vị menu Cấp 3 trở đi (Xổ sang ngang bên phải) */
+
 .submenu .submenu {
   top: 0;
   right: 100%; /* Đẩy sang bên phải */
@@ -186,7 +186,17 @@ color: green;
   padding-top: 100%; 
   overflow: hidden;
 }
-
+.product-thumb .inner-featured{
+  position:absolute;
+  top:0;
+  right:0;
+  background: red;
+  color:yellow;
+  padding: 3px 6px; 
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px
+}
 .product-thumb img {
   position: absolute;
   top: 0;

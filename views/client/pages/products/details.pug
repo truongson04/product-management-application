@@ -12,19 +12,15 @@ block main
             li(class="breadcrumb-item active", aria-current="page") #{product.title}
 
     div(class="row align-items-center") 
-        //- align-items-center giúp nội dung căn giữa theo chiều dọc nếu ảnh quá cao
 
-        //- 1. CỘT TRÁI: Chỉ chứa Hình ảnh
         div(class="col-12 col-md-6 mb-4 mb-md-0")
         div(class="product-image-wrapper")
             img(src=product.thumbnail, alt=product.title, class="img-fluid shadow-sm rounded", id="mainImg")
 
-        //- 2. CỘT PHẢI: Thông tin và Form mua hàng
         div(class="col-12 col-md-6")
         div(class="product-info-content ps-md-4") 
-            //- ps-md-4 tạo khoảng cách đệm giữa ảnh và chữ trên desktop
-
-            //- Tiêu đề
+        
+           
             h1(class="product-title display-6 fw-bold mb-3") #{product.title}
 
             //- Khu vực giá (Làm gọn lại)
@@ -34,7 +30,7 @@ block main
             
             //- Giá cũ & Giảm giá (Chỉ hiện khi có discount)
             if product.discountPercentage > 0
-                - var oldPrice = (parseFloat(product.price) * 100) / (100 - parseFloat(product.discountPercentage))
+                - let oldPrice = (parseFloat(product.price) * 100) / (100 - parseFloat(product.discountPercentage))
                 div(class="d-flex flex-column")
                 span(class="original-price text-muted text-decoration-line-through small") $#{Math.floor(oldPrice)}
                 span(class="badge bg-danger") -#{product.discountPercentage}%

@@ -1,0 +1,28 @@
+mixin product-layout-grid(products)
+    each item in products 
+      div(class="col-12 col-sm-6 col-md-4 col-lg-3")
+        div(class="product-card") 
+          
+         
+          div(class="product-thumb")
+            if item.discountPercentage > 0
+              div(class="badge-discount") -#{item.discountPercentage}%
+            a(href=`/products/${item.id}`)
+              img(src=item.thumbnail, alt=item.title)
+            if( item.position && item.position>20)
+                div(class="inner-featured") New Product
+       
+          div(class="product-content")
+            h3(class="product-title")
+              a(href=`/products/${item.id}`) #{item.title}
+            
+            div(class="product-price")
+            
+              span(class="price-new") $#{Math.floor(parseFloat(item.price))}
+            
+              if item.discountPercentage > 0
+                
+                - let oldPrice = (parseFloat(item.price) * 100) / (100 - parseFloat(item.discountPercentage))
+                span(class="price-old") $#{Math.floor(oldPrice)}
+            
+            button(class="btn-add-cart") Add to cart
