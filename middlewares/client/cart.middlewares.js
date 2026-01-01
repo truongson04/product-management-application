@@ -8,5 +8,18 @@ if(!req.cookies.cartId){
     })
   
 }
+else{
+    const cart = await Cart.findOne({_id:req.cookies.cartId})
+   
+    if(cart){
+       if(cart.products && cart.products.length>0){
+        let total = cart.products.reduce((sum, current)=>{
+           return sum+=current.quantity;
+        }, 0)
+        cart.total = total;
+        res.locals.miniCart= cart;
+       }
+    }
+}
 next();
 }

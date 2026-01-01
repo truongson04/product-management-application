@@ -23,5 +23,8 @@ header.header
             a(href="/products") Products
             if(categories)
                +sub-menu(categories, "/products")
+          li 
+            a(href="") Cart (#{miniCart ? miniCart.total:"0"  })
+            
                
         
