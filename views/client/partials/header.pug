@@ -6,6 +6,14 @@ header.header
       .inner-logo
         a(href="/")
           img(src="/images/pic.png" alt="Logo")
+      
+      form(
+        action="/search"
+        method="GET"
+      )
+        div(class="form-group d-flex mb-0")
+          input(type="text", placeholder="Type your word...", class="form-control", name="keyword", value=keyword)
+          button(type="submit", class="form-control btn btn-primary") Search
    
       .inner-menu
         ul
