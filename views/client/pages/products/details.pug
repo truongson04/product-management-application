@@ -1,59 +1,73 @@
 extends ../../layouts/default.pug 
+
 block main 
-   div(class="product-detail-container container py-5")
+    div(class="product-detail-container container py-5")
   
- 
-    div(class="row mb-4")
-        div(class="col-12")
-        nav(aria-label="breadcrumb")
-            ol(class="breadcrumb")
-            li(class="breadcrumb-item"): a(href="/") Homepage
-            li(class="breadcrumb-item"): a(href="/products") Products
-            li(class="breadcrumb-item active", aria-current="page") #{product.title}
+        //- Breadcrumb gọn gàng
+        div(class="row mb-4")
+            div(class="col-12")
+                nav(aria-label="breadcrumb")
+                    ol(class="breadcrumb bg-transparent p-0 mb-0")
+                        li(class="breadcrumb-item"): a(href="/") Home Page
+                        li(class="breadcrumb-item"): a(href="/products") Products
+                        li(class="breadcrumb-item active", aria-current="page") #{product.title}
 
-    div(class="row align-items-center") 
+        div(class="row") 
+            //- Cột ảnh sản phẩm
+            div(class="col-12 col-md-6 col-lg-5 mb-4 mb-md-0")
+                div(class="product-image-wrapper shadow-sm")
+                    img(src=product.thumbnail, alt=product.title, class="img-fluid", id="mainImg")
 
-        div(class="col-12 col-md-6 mb-4 mb-md-0")
-        div(class="product-image-wrapper")
-            img(src=product.thumbnail, alt=product.title, class="img-fluid shadow-sm rounded", id="mainImg")
+            //- Cột thông tin sản phẩm
+            div(class="col-12 col-md-6 col-lg-7")
+                div(class="product-info-content ps-lg-4") 
+                    
+                    //- Tiêu đề
+                    h1(class="product-title") #{product.title}
+                    if(product.category)
+                        div(class="mb-3")
+                            span Category: 
+                            a(href=`/products/${product.category.slug}`) #{product.category.title}
 
-        div(class="col-12 col-md-6")
-        div(class="product-info-content ps-md-4") 
+                    //- Meta info (Tạo cảm giác chuyên nghiệp hơn)
+                    div(class="product-meta mb-3 d-flex align-items-center")
+                        span(class="border-start ps-3 text-muted") Status :
+                            if product.stock > 0
+                                strong(class="text-success") Active
+                            else 
+                                strong(class="text-danger") Out of stock
+
+                    //- Khu vực Giá
+                    div(class="price-block d-flex align-items-center gap-3 mb-4")
+                        //- Giá hiện tại
+                        span(class="current-price") $#{Math.floor(parseFloat(product.price))}
+                        
+                        //- Giá cũ & Badge giảm giá
+                        if product.discountPercentage > 0
+                            - let oldPrice = (parseFloat(product.price) * 100) / (100 - parseFloat(product.discountPercentage))
+                            div(class="old-price-wrap")
+                                span(class="discount-badge") -#{product.discountPercentage}%
+                                span(class="original-price") $#{Math.floor(oldPrice)}
+                    
+                    //- Mô tả ngắn
+                    div(class="product-description")
+                        p !{product.description}
+                    
+                    //- Form mua hàng
+                    form(action=`/cart/add/${product.id}`, method="POST")
+                        div(class="row g-3")
+                            //- Input Số lượng
+                            div(class="col-auto")
+                                div(class="input-group quantity-wrapper")
+                                    button(type="button", id="decrease") -
+                                    input(type="number", class="form-control text-center p-0", name="quantity", value="1", min="1", id="qtyInput")
+                                    button(type="button", id="increase") +
+                            
+                            //- Nút Add to cart
+                            div(class="col")
+                                button(type="submit", class="btn btn-primary btn-add-cart w-100 text-white") 
+                                    i(class="fa-solid fa-cart-shopping") Add to cart 
         
-           
-            h1(class="product-title display-6 fw-bold mb-3") #{product.title}
 
-            //- Khu vực giá (Làm gọn lại)
-            div(class="price-block d-flex align-items-center gap-3 mb-4")
-            //- Giá mới (To và đậm)
-            span(class="current-price text-primary fw-bold h2 mb-0") $#{Math.floor(parseFloat(product.price))}
             
-            //- Giá cũ & Giảm giá (Chỉ hiện khi có discount)
-            if product.discountPercentage > 0
-                - let oldPrice = (parseFloat(product.price) * 100) / (100 - parseFloat(product.discountPercentage))
-                div(class="d-flex flex-column")
-                span(class="original-price text-muted text-decoration-line-through small") $#{Math.floor(oldPrice)}
-                span(class="badge bg-danger") -#{product.discountPercentage}%
-            
-            //- Mô tả
-            div(class="product-description mb-4 text-secondary")
-            p #{product.description}
-            
-            //- Form mua hàng
-            form(action=`/cart/add/${product.id}`, method="POST")
-            div(class="row g-3 align-items-center")
-                //- Chọn số lượng
-                div(class="col-4 col-md-3")
-                div(class="input-group input-group-sm quantity-wrapper")
-                    button(type="button", class="btn btn-light border", onclick="decreaseQty()") -
-                    input(type="number", class="form-control text-center border-start-0 border-end-0", name="quantity", value="1", min="1", id="qtyInput")
-                    button(type="button", class="btn btn-light border", onclick="increaseQty()") +
-                
-                //- Nút mua
-                div(class="col-8 col-md-9")
-                button(type="submit", class="btn btn-primary w-100 py-2 fw-bold shadow-sm btn-add-cart") 
-                    i(class="fa-solid fa-cart-shopping me-2") 
-                    | Thêm vào giỏ hàng
-                
-    
     script(src="/js/script.js")

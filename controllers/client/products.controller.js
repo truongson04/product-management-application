@@ -12,13 +12,21 @@ const products =   await Product.find({deleted : false}) .sort({position:"desc"}
 
 }
 module.exports.getDetails= async (req, res)=>{
+  
 try{
   const find ={
     deleted: false,
     _id: req.params.id
   }
   const product = await Product.findOne(find);
-  
+  if(product.product_category_id){
+    const category = await productCategory.findOne({
+      _id: product.product_category_id,
+      deleted:false,
+      status:"active"
+    })
+    product.category= category;
+  }
   res.render("client/pages/products/details", {
     pageTitle: product.title,
     product:product
@@ -26,6 +34,7 @@ try{
  
 }
  catch(err){
+  console.log(err);
     res.redirect("/products")
   }
 

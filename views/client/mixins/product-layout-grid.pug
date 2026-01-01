@@ -7,14 +7,14 @@ mixin product-layout-grid(products)
           div(class="product-thumb")
             if item.discountPercentage > 0
               div(class="badge-discount") -#{item.discountPercentage}%
-            a(href=`/products/${item.id}`)
+            a(href=`/products/details/${item.id}`)
               img(src=item.thumbnail, alt=item.title)
             if( item.position && item.position>20)
                 div(class="inner-featured") New Product
        
           div(class="product-content")
             h3(class="product-title")
-              a(href=`/products/${item.id}`) #{item.title}
+              a(href=`/products/details/${item.id}`) #{item.title}
             
             div(class="product-price")
             
