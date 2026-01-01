@@ -74,9 +74,9 @@ if(sortKey && sortValue){
     selectedOption.setAttribute("selected", "true");
 
 }
-//  const showAlert = document.querySelector("[show-alert]");
-//  if(showAlert){
-//     setTimeout(()=>{
-//         showAlert.classList.add("d-none");
-//     }, 5000)
-//  }
+ const showAlert = document.querySelector("[show-alert]");
+ if(showAlert){
+    setTimeout(()=>{
+        showAlert.classList.add("d-none");
+    }, 5000)
+ }

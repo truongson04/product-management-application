@@ -1,0 +1,6 @@
+mixin successAlert()
+ - if (messages.success)
+    div(class="alert alert-success", show-alert) #{messages.success} <span close-alert> X </span>
+mixin errorAlert()
+   - if(messages.error)
+      div(class="alert alert-danger", show-alert)  #{messages.error} <span close-alert> X </span>
