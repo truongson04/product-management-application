@@ -2,8 +2,7 @@ mixin sub-menu(data, path)
     
     ul(class="sub-menu")
         each items in data 
-            - const currentPath = `${path}/${items.slug}`
             li(class=((items.children && items.children.length>0) ? "has-submenu":""))
                 a(href=`${path}/${items.slug}`) #{items.title}
                 if (items.children && items.children.length>0)
-                    +sub-menu(items.children, currentPath)
+                    +sub-menu(items.children, path)
