@@ -6,14 +6,14 @@ header.header
       .inner-logo
         a(href="/")
           img(src="/images/pic.png" alt="Logo")
-      
-      form(
-        action="/search"
-        method="GET"
-      )
-        div(class="form-group d-flex mb-0")
-          input(type="text", placeholder="Type your word...", class="form-control", name="keyword", value=keyword)
-          button(type="submit", class="form-control btn btn-primary") Search
+      if(user)
+        form(
+          action="/search"
+          method="GET"
+        )
+          div(class="form-group d-flex mb-0")
+            input(type="text", placeholder="Type your word...", class="form-control", name="keyword", value=keyword)
+            button(type="submit", class="form-control btn btn-primary btn-sm ml-4") Search
    
       .inner-menu
         ul
@@ -25,6 +25,14 @@ header.header
                +sub-menu(categories, "/products")
           li 
             a(href="/cart") Cart (#{miniCart ? miniCart.total:"0"  })
-            
+          if !user
+            li 
+              a(href="/user/login") Login
+            li 
+              a(href="/user/register") Register 
+          else 
+            li 
+              a(href="/user/logout") Logout 
+          
                
         
