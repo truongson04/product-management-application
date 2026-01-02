@@ -1,0 +1,57 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug 
+include ../../mixins/box-head.pug 
+block main 
+    +successAlert()
+    +errorAlert()
+    div(class="container my-3")
+        div(class="row")
+            div(class="col-12")
+                +box-head()
+        div(class="row")
+            div(class="col-12")
+                table(class="table table-bordered")
+                    thead 
+                        tr 
+                            th Number 
+                            th Pic
+                            th Title
+                            th Price 
+                            th Quantity 
+                            th Total Price 
+                            th Actions
+                    tbody
+                        if(cartDetails.products.length>0)
+                            each items, index  in cartDetails.products
+
+                                tr 
+                                    td #{index+1}
+                                    td 
+                                        img(src=items.productInfo.thumbnail, width="80px")
+                                    td 
+                                        a(href=`/products/details/${items.product_id}`) #{items.productInfo.title}
+                                    td $#{items.productInfo.priceNew} 
+                                    td 
+                                        input(
+                                            type="number"
+                                            name="quantity"
+                                            value= items.quantity 
+                                            min="1"
+                                            item-id=items.product_id
+                                            style="width:60px"
+                                        )
+                                    td $#{items.productInfo.priceNew*items.quantity} 
+                                    td 
+                                        a(href=`/cart/delete/${items.product_id}`
+                                            class="btn btn-danger"
+                                            ) Delete 
+                                    
+
+                                     
+                        else 
+                            h3(class="text-danger") There is not any products in the cart 
+                            
+        
+        h3(class="text-right") Total money needs to pay : $#{cartDetails.totalPrice}
+        div(class="text-right mt-3")
+            a(href="/checkout", class="btn btn-success") Pay
