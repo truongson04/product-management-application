@@ -10,7 +10,7 @@ if(!req.cookies.cartId){
 }
 else{
     const cart = await Cart.findOne({_id:req.cookies.cartId})
-   
+   // lay ra tong so san pham co trong gio hang 
     if(cart){
        if(cart.products && cart.products.length>0){
         let total = cart.products.reduce((sum, current)=>{
