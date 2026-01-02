@@ -60,7 +60,7 @@ module.exports.placeOrder= async (req, res)=>{
     }
     const orderObject = {
         cart_id : cartId,
-        userInfo:"",
+        userInfo:userInfo,
         products:products
     }
     const order = new Order(orderObject);
@@ -72,7 +72,30 @@ module.exports.placeOrder= async (req, res)=>{
 }
 module.exports.successOrder = async (req, res)=>{
     const orderId = req.params.orderId; 
+    const order = await Order.findOne({
+        _id: orderId
+    })
+    for(const product of order.products ){
+        const productInfo = await Product.findOne({
+        _id: product.product_id
+        })
+       
+        if(productInfo.discountPercentage){
+            // items.priceNew= ((items.price*(100-items.discountPercentage))/100).toFixed(0);
+            productInfo.priceNew= ((productInfo.price*(100-productInfo.discountPercentage))/100).toFixed(0)
+        }
+        else{
+            productInfo.priceNew= productInfo.price
+        }
+         product.productInfo= productInfo;
+         product.totalPrice= product.productInfo.priceNew* product.quantity
+
+    }
+    order.totalPrice= order.products.reduce((sum, current)=>{
+        return sum+ (current.totalPrice);
+    }, 0)
     res.render("client/pages/checkout/success", {
-        pageTitle:"Successful order"
+        pageTitle:"Successful order", 
+        order:order
     })
 }
