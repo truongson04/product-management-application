@@ -72,3 +72,16 @@ module.exports.index = async (req, res)=>{
         cartDetails: cart
     });
 }
+module.exports.deleteProduct= async (req,res)=>{
+    const cartId = req.cookies.cartId;
+    const productId = req.params.productId;
+    // cau lenh xoa ban ghi trong mang trong mongodb
+    await Cart.updateOne({_id: cartId},{
+        $pull:{products:{product_id:productId}}
+    }
+
+     )
+     req.flash("success", "Deleted successfully")
+     res.redirect("/cart");
+    
+}
