@@ -51,8 +51,6 @@ module.exports.index = async (req, res)=>{
             item.productInfo = productInfo;
             
         }
-
-        console.log(cart.products)
         // sua lai gia 
         let infoList = cart.products.map((items)=>{
             return items.productInfo;
@@ -84,4 +82,17 @@ module.exports.deleteProduct= async (req,res)=>{
      req.flash("success", "Deleted successfully")
      res.redirect("/cart");
     
+}
+module.exports.updateProduct= async (req, res)=>{
+    const productId = req.params.productId;
+    const productQuantity= req.params.productQuantity;
+    const cartId = req.cookies.cartId;
+    await Cart.updateOne({_id: cartId, "products.product_id":productId}, {
+        $set:{
+            "products.$.quantity":productQuantity
+        }
+
+    })
+   req.flash("success", "Update product's quantity successfully !!")
+   res.redirect("/cart");
 }
