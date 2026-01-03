@@ -1,6 +1,7 @@
 const User = require("../../models/users.model");
 const randomHelper = require("../../helper/generateRandom");
 const ForgotPassword = require("../../models/forgotPassword.model");
+const Cart = require("../../models/cart.model");
 const md5 = require("md5");
 const sendMailHelper = require("../../helper/sendMail");
 module.exports.register= (req, res)=>{
@@ -53,11 +54,29 @@ module.exports.loginUser= async (req, res)=>{
         res.redirect("/user/login");
         return; 
     }
+    // nếu mà user đã có giỏ hàng rồi thì lưu id của họ và cart_id tương ứng vào cookie
+    const cart = await Cart.findOne({
+        user_id: user.id
+    });
+    if(cart){
+        res.cookie("cartId", cart.id);
+    }
+    else{
+         await Cart.updateOne({
+        cartId:req.cookies.cartId
+    }, {
+        user_id:user.id
+    })
+    }
+
+   
+    
     res.cookie("tokenUser", userCheck.tokenUser);
     res.redirect("/");
 }
 module.exports.logout= (req, res)=>{
     res.clearCookie("tokenUser");
+    res.clearCookie("carId");
     req.flash("success", "Logout successfully")
     res.redirect("/")
 }
