@@ -6,4 +6,10 @@ route.post("/register", controller.registerNewUser)
 route.get("/login", controller.login)
 route.post("/login", controller.loginUser)
 route.get("/logout", controller.logout)
+route.get("/password/forgot", controller.forgotPassword);
+route.post("/password/forgot", controller.recoverPassword);
+route.get("/password/otp", controller.getOtp);
+route.post("/password/otp", controller.handleOtp);
+route.get("/password/reset", controller.getReset)
+route.post("/password/reset", controller.resetPassword);
 module.exports= route

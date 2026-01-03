@@ -1,5 +1,8 @@
 const User = require("../../models/users.model");
+const randomHelper = require("../../helper/generateRandom");
+const ForgotPassword = require("../../models/forgotPassword.model");
 const md5 = require("md5");
+const sendMailHelper = require("../../helper/sendMail");
 module.exports.register= (req, res)=>{
     res.render("client/pages/user/register", {
         pageTitle:"Register new user"
@@ -57,4 +60,79 @@ module.exports.logout= (req, res)=>{
     res.clearCookie("tokenUser");
     req.flash("success", "Logout successfully")
     res.redirect("/")
+}
+module.exports.forgotPassword= (req, res)=>{
+    res.render("client/pages/user/forgot-password.pug", {
+        pageTitle:"Recover password"
+    })
+
+}
+module.exports.recoverPassword = async (req, res)=>{
+    const email = req.body.email;
+    const userCheck = await User.findOne({
+        email:email, 
+        deleted:false
+    })
+    if(!userCheck){
+        req.flash("error", "Cannot find your email");
+        res.redirect("/");
+        return;
+    }
+    const otp= randomHelper.generateRandomNumber(6);
+    const objForgotPassword = {
+        email:email,
+        otp: otp,
+        expireAt:Date.now()
+    }
+    const forgot = new ForgotPassword(objForgotPassword);
+    await forgot.save();
+    const html = `Your otp code is ${otp}. You have 3 minutes to use it`
+    sendMailHelper.sendMail(email, "OTP code", html)
+
+    res.redirect(`/user/password/otp/?email=${email}`)
+}
+module.exports.getOtp = async (req, res)=>{
+    const email = req.query.email;
+    res.render("client/pages/user/otp-password", {
+        pageTitle:" OTP validation",
+        email:email
+    })
+}
+module.exports.handleOtp= async (req, res)=>{
+    const email = req.body.email;
+    const otp = req.body.otp;
+    const check = await ForgotPassword.findOne({
+        email:email, 
+        otp:otp
+    })
+    if(!check){
+        req.flash("error", "OTP is invalid");
+        res.redirect("/user/password/otp");
+        return; 
+    }
+    const user = await User.findOne({
+        email:email
+    });
+    res.cookie("tokenUser", user.tokenUser);
+    res.redirect("/user/password/reset");
+
+}
+module.exports.getReset=(req, res)=>{
+    res.render("client/pages/user/reset-password.pug", {
+        pageTitle:"Reset password"
+    })
+}
+module.exports.resetPassword=async (req, res)=>{
+    const passwordNew = req.body.password;
+    const tokenUser = req.cookies.tokenUser;
+    await User.updateOne({
+        tokenUser:tokenUser
+    }, {
+        password: md5(passwordNew)
+    }
+
+    )
+    req.flash("success", "change password successfully")
+    res.redirect("/")
+    
 }
