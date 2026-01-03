@@ -25,6 +25,9 @@ header.header
                +sub-menu(categories, "/products")
           li 
             a(href="/cart") Cart (#{miniCart ? miniCart.total:"0"  })
+          if(user)
+            li 
+              a(href="/user/info") #{user.fullName.split(" ").slice(-1)}
           if !user
             li 
               a(href="/user/login") Login
