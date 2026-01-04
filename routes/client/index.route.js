@@ -18,5 +18,5 @@ app.use("/products",productRouters);
 app.use("/search", searchRouters);
 app.use("/cart", cartRoutes);
 app.use("/checkout", checkoutRoute);
-app.use("/user", userRoute);
+app.use("/user", userRoute);    
 }

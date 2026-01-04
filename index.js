@@ -28,6 +28,11 @@ app.locals.moment= moment;
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 route(app);
 routeAdmin(app);
+app.use((req, res) => {
+  res.status(404).render("client/pages/error/404", {
+    pageTitle: "Not Found"
+  });
+});
 
 app.listen(port, ()=>{
     console.log(`The server is running at ${port}`)
