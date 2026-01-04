@@ -1,0 +1,71 @@
+extends ../../layouts/default.pug 
+include ../../mixins/successAlert.pug 
+block main 
+    h1 General Settings
+    +errorAlert()
+    +successAlert()
+    form(
+        action="/admin/settings/general?_method=PATCH"
+        method="POST"
+        enctype="multipart/form-data"
+    )
+        div(class="form-group")
+            label(for="websiteName") Website Name: 
+            input(
+                type="text"
+                class="form-control"
+                id="websiteName"
+                name="websiteName"
+                value=settings.websiteName
+            )
+        div(class="form-group")
+            label(for="logo") Logo: 
+            input(
+                type="file"
+                class="form-control"
+                id="logo"
+                name="logo"
+                accept="image/*"
+                 data-upload-image
+            )
+            img(src=settings.logo, data-upload-image-preview, width="200px", height="200px")
+        div(class="form-group")
+            label(for="phone") Phone: 
+            input(
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+                value= settings.phone
+            )
+        div(class="form-group")
+            label(for="email") Email
+            input(
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                value=settings.email
+            )
+        div(class="form-group")
+            label(for="address") Address:  
+            input(
+                type="text"
+                class="form-control"
+                id="address"
+                name="address"
+                value=settings.address
+            )
+        div(class="form-group")
+            label(for="copyright") Copyright
+            input(
+                type="text"
+                class="form-control"
+                id="copyright"
+                name="copyright"
+                value= settings.copyright
+            )
+        button(type="submit", class="btn btn-primary") Update
+        
+        
+        

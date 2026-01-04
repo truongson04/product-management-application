@@ -21,6 +21,7 @@ if(buttons.length>0){
 }
    
 const searchButton = document.querySelector(".search-btn");
+if(searchButton){
 searchButton.addEventListener("click", (e)=>{
     e.preventDefault(); 
     let url= new URL(window.location.href);
@@ -35,8 +36,11 @@ searchButton.addEventListener("click", (e)=>{
 
     
 })
+}
+
 //pagination
 const buttonPagination = document.querySelectorAll("[button-paginaion]");
+if(buttonPagination.length>0){
 buttonPagination.forEach((buttons)=>{
  buttons.addEventListener("click", ()=>{
    const currentPage= buttons.getAttribute("button-paginaion");
@@ -45,12 +49,18 @@ buttonPagination.forEach((buttons)=>{
    window.location.href= url.href;
  })
 })
+}
+
 //sorting logic 
 const sort = document.querySelector("[sort]");
-const selectSort= sort.querySelector("select");
-const sortClear = document.querySelector("[sort-clear]")
+let selectSort=null;
+if(sort){
+    selectSort= sort.querySelector("select");
+}
 
-selectSort.addEventListener("change", (e)=>{
+const sortClear = document.querySelector("[sort-clear]")
+if(sort&&selectSort&&sortClear){
+    selectSort.addEventListener("change", (e)=>{
     let sortKeyValue= e.target.value.split("-");
     let url= new URL(window.location.href);
     url.searchParams.set("sortKey", sortKeyValue[0]);
@@ -64,6 +74,10 @@ sortClear.addEventListener("click", ()=>{
     url.searchParams.delete("sortValue");
     window.location.href= url.href;
 })
+
+}
+
+
 // sủa front end thêm selected cho option của select khi sort
 let url = new URL(window.location.href);
 const sortKey = url.searchParams.get("sortKey");
@@ -80,3 +94,17 @@ if(sortKey && sortValue){
         showAlert.classList.add("d-none");
     }, 5000)
  }
+ // show preview image 
+ const inputImage = document.querySelector("[data-upload-image]")
+const preview = document.querySelector("[data-upload-image-preview]");
+if(inputImage && preview){
+inputImage.addEventListener("change", (e)=>{
+console.log("change")
+ const file = e.target.files[0];
+if(file){
+    preview.src= URL.createObjectURL(file);
+
+}
+
+})
+}

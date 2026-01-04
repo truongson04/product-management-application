@@ -159,7 +159,6 @@ module.exports.getUserInfo= async (req, res)=>{
     const userInfo = await User.findOne({
         tokenUser: req.cookies.tokenUser
     }).select("-password")
-    console.log(userInfo)
     res.render("client/pages/user/info.pug", {
         pageTitle:"User's information", 
         userInfo: userInfo

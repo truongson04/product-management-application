@@ -8,9 +8,11 @@ module.exports = (app)=>{
     const checkoutRoute= require("../../routes/client/checkout.route");
     const userRoute = require("./user.route");
     const userMiddleware = require("../../middlewares/client/user.middleware");
+    const settingMiddlewares = require("../../middlewares/client/setting.middleware")
     app.use(categoryRouters.category)// trang nào cũng có danh mục sản phẩm
     app.use(cartMiddlewares.cartId)
     app.use(userMiddleware.infoUser);
+    app.use(settingMiddlewares.settingGeneral)
     app.use("/",homeRouters);
 app.use("/products",productRouters);
 app.use("/search", searchRouters);
